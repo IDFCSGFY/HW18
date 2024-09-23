@@ -1,56 +1,15 @@
 package com.HW._8.service;
 
-import com.HW._8.domain.Employee;
-import com.HW._8.exception.BadParamException;
-import com.HW._8.exception.EmployeeAlreadyAddedException;
-import com.HW._8.exception.EmployeeNotFoundException;
-import com.HW._8.exception.EmployeeStorageIsFullException;
-import org.apache.coyote.BadRequestException;
-import org.springframework.stereotype.Service;
+import com.HW._8.model.Employee;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class EmployeeService {
-    private List<Employee> employees;
-    private final int MAX_EMPLOYEE_COUNT = 1000;
+public interface EmployeeService {
+    Employee addEmployee(String firstName, String lastName);
 
-    public EmployeeService() {
-        employees = new ArrayList<>();
-    }
+    Employee removeEmployee(String firstName, String lastName);
 
-    public void addEmployee(String firstName, String lastName) {
-        if (employees.size() >= MAX_EMPLOYEE_COUNT) {
-            throw new EmployeeStorageIsFullException();
-        }
-        if (firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty()) {
-            throw new BadParamException();
-        }
-        Employee target = new Employee(firstName, lastName);
-        if (employees.contains(target)) {
-            throw new EmployeeAlreadyAddedException();
-        }
-        employees.add(new Employee(firstName, lastName));
-    }
+    Employee findEmployee(String firstName, String lastName);
 
-    public void removeEmployee(String firstName, String lastName) {
-        Employee target = new Employee(firstName, lastName);
-        if (!employees.contains(target)) {
-            throw new EmployeeNotFoundException();
-        }
-        employees.remove(target);
-    }
-
-    public Employee findEmployee(String firstName, String lastName) {
-        Employee target = new Employee(firstName, lastName);
-        if (!employees.contains(target)) {
-            throw new EmployeeNotFoundException();
-        }
-        return employees.get(employees.indexOf(target));
-    }
-
-    public List<Employee> returnAllEmployees() {
-        return employees;
-    }
+    List<Employee> returnAllEmployees();
 }
