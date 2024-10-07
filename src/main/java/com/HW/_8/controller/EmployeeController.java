@@ -18,23 +18,34 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @GetMapping(path = "/addfull")
+    public Employee addEmployee(@RequestParam(value = "firstName", required = false) String firstName,
+                                @RequestParam(value = "lastName", required = false) String lastName,
+                                @RequestParam(value = "department", required = false) int dID,
+                                @RequestParam(value = "wage", required = false) int wage) {
+        return employeeService.addEmployee(firstName, lastName, dID, wage);
+    }
+
     @GetMapping(path = "/add")
-    public Employee addEmployee(@RequestParam(value = "firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+    public Employee addEmployee(@RequestParam(value = "firstName", required = false) String firstName,
+                                @RequestParam(value = "lastName", required = false) String lastName) {
         return employeeService.addEmployee(firstName, lastName);
     }
 
     @GetMapping(path = "/remove")
-    public Employee removeEmployee(@RequestParam(value = "firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+    public Employee removeEmployee(@RequestParam(value = "firstName", required = false) String firstName,
+                                   @RequestParam(value = "lastName", required = false) String lastName) {
         return employeeService.removeEmployee(firstName, lastName);
     }
 
     @GetMapping(path = "/find")
-    public Employee findEmployee(@RequestParam(value = "firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+    public Employee findEmployee(@RequestParam(value = "firstName", required = false) String firstName,
+                                 @RequestParam(value = "lastName", required = false) String lastName) {
         return employeeService.findEmployee(firstName, lastName);
     }
 
     @GetMapping(path = "/all")
     public Map<String, Employee> printAllEmployees() {
-        return employeeService.returnAllEmployees();
+        return employeeService.getAllEmployees();
     }
 }
