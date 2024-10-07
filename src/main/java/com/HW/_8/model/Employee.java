@@ -5,10 +5,19 @@ import java.util.Objects;
 public class Employee {
     private String firstName;
     private String lastName;
+    private int departmentID;
+    private int wage;
 
     public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Employee(String firstName, String lastName, int departmentID, int wage) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.departmentID = departmentID;
+        this.wage = wage;
     }
 
     public String getFirstName() {
@@ -34,6 +43,24 @@ public class Employee {
 
     @Override
     public String toString() {
-        return String.join(" ", lastName, firstName);
+        return String.join(" ", lastName, firstName)
+                + "\nОтдел:\t" + departmentID
+                + "\nЗарплата: " + wage;
+    }
+
+    public int getDepartmentID() {
+        return departmentID;
+    }
+
+    public void setDepartmentID(int departmentID) {
+        this.departmentID = departmentID;
+    }
+
+    public int getWage() {
+        return wage;
+    }
+
+    public void setWage(int wage) {
+        this.wage = wage;
     }
 }

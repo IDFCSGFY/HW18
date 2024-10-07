@@ -35,6 +35,22 @@ public class EmployeeServiceImpl implements EmployeeService {
         return target;
     }
 
+    public Employee addEmployee(String firstName, String lastName, int dID, int wage) {
+        if (employees.size() >= MAX_EMPLOYEE_COUNT) {
+            throw new EmployeeStorageIsFullException();
+        }
+        if (firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty()) {
+            throw new BadParamException();
+        }
+        Employee target = new Employee(firstName, lastName, dID, wage);
+        String tempKey = String.join("_", firstName, lastName);
+        if (employees.containsKey(tempKey)) {
+            throw new EmployeeAlreadyAddedException();
+        }
+        employees.put(tempKey, target);
+        return target;
+    }
+
     public Employee removeEmployee(String firstName, String lastName) {
         Employee target = new Employee(firstName, lastName);
         String tempKey = String.join("_", firstName, lastName);
@@ -54,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees.get(tempKey);
     }
 
-    public Map<String, Employee> returnAllEmployees() {
+    public Map<String, Employee> getAllEmployees() {
         return Map.copyOf(employees);
     }
 }
