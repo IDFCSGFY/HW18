@@ -7,19 +7,16 @@ import com.HW._8.exception.EmployeeNotFoundException;
 import com.HW._8.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final List<Employee> employees;
+    private final Map<String, Employee> employees;
     private final int MAX_EMPLOYEE_COUNT = 1000;
 
     public EmployeeServiceImpl() {
-        this.employees = new ArrayList<>();
+        this.employees = new HashMap<>();
     }
 
     public Employee addEmployee(String firstName, String lastName) {
@@ -30,31 +27,34 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BadParamException();
         }
         Employee target = new Employee(firstName, lastName);
-        if (employees.contains(target)) {
+        String tempKey = String.join("_", firstName, lastName);
+        if (employees.containsKey(tempKey)) {
             throw new EmployeeAlreadyAddedException();
         }
-        employees.add(new Employee(firstName, lastName));
+        employees.put(tempKey, target);
         return target;
     }
 
     public Employee removeEmployee(String firstName, String lastName) {
         Employee target = new Employee(firstName, lastName);
-        if (!employees.contains(target)) {
+        String tempKey = String.join("_", firstName, lastName);
+        if (!employees.containsKey(tempKey)) {
             throw new EmployeeNotFoundException();
         }
-        employees.remove(target);
+        employees.remove(tempKey);
         return target;
     }
 
     public Employee findEmployee(String firstName, String lastName) {
         Employee target = new Employee(firstName, lastName);
-        if (!employees.contains(target)) {
+        String tempKey = String.join("_", firstName, lastName);
+        if (!employees.containsKey(tempKey)) {
             throw new EmployeeNotFoundException();
         }
-        return employees.get(employees.indexOf(target));
+        return employees.get(tempKey);
     }
 
-    public List<Employee> returnAllEmployees() {
-        return Collections.unmodifiableList(employees);
+    public Map<String, Employee> returnAllEmployees() {
+        return Map.copyOf(employees);
     }
 }
